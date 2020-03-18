@@ -1,0 +1,27 @@
+{
+  "name": "@jonathanmataloni/app-translator",
+  "description": "Define translation resources for your app and translate strings instantly",
+  "version": "1.0.0",
+  "tag": "1.0.0",
+  "author": "Jonathan Mataloni",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "translation",
+    "languages"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JonathanMataloni/app-translator"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
