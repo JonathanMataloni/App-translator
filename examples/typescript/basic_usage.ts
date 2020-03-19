@@ -1,4 +1,4 @@
-import { AppTranslator, Vocabulary, VocabulariesCollection, t } from "../../src"
+import { AppTranslator, Vocabulary, VocabulariesCollection, t } from "../../lib"
 
 /**
  * Define some Vocabulary objects
