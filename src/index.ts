@@ -143,9 +143,9 @@ export class AppTranslator {
     /**
      * Use the browser language if provided by vocabularies collection.
      * @param force (Opt) Set true if you want to use the the browser language as main language even if it not exists in the provided vocabularies collection
-     * @returns The browser language tag without the regional code
+     * @returns True if a related vocabulary is available
      */
-    static getBrowserLanguage = (force?: boolean): string => {
+    static getBrowserLanguage = (force?: boolean): boolean => {
         if (!AppTranslator._initialized)
             throw new Error("AppTranslator not initialized. Call AppTranslator.initialize() first.");
         const bcp47tag = navigator.language.split("-")[0];
@@ -155,7 +155,7 @@ export class AppTranslator {
         }
 
         if (!AppTranslator?.collection?.[bcp47tag] && force) AppTranslator.language = bcp47tag
-        return bcp47tag
+        return !!AppTranslator?.collection?.[bcp47tag]
     }
 
     /**
@@ -216,7 +216,7 @@ export class AppTranslator {
     /**
      * Translate a string with the provided setup
      * @param originalStr The original string in the source code
-     * @param capitalize (Opt) Capitalize the first letter of the output (even if return the original string)
+     * @param capitalize (Opt) Capitalize the first letter of the output (even if it returns the original string)
      * @returns The translated string in the main language, the fallback language or the original code, capitalized if required
      */
     static translate = (originalStr: string | number, capitalize?: boolean): string | never => {
