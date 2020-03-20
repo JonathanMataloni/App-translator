@@ -27,33 +27,33 @@ npm install app-translator
 
 ### Interfaces
 
-[Vocabulary](#Vocabulary)
-[VocabulariesCollection](#VocabulariesCollection)
-[AppTranslatorOptions](#AppTranslatorOptions-interface)
+[Vocabulary](#Vocabulary)  
+[VocabulariesCollection](#VocabulariesCollection)  
+[AppTranslatorOptions](#AppTranslatorOptions-interface)  
 
 ### Classes
 
-[AppTranslator](#AppTranslator)
+[AppTranslator](#AppTranslator)  
 
 ### Properties
 
-[AppTranslator.language](#AppTranslatorlanguage)
-[AppTranslator.options](#AppTranslatoroptions)
-[AppTranslator.collection](#AppTranslatorcollection)
+[AppTranslator.language](#AppTranslatorlanguage)  
+[AppTranslator.options](#AppTranslatoroptions)  
+[AppTranslator.collection](#AppTranslatorcollection)  
 
 ### Methods
 
-[AppTranslator.initialize](#AppTranslatorinitialize)
-[AppTranslator.setLanguage](#AppTranslatorsetLanguage)
-[AppTranslator.getBrowserLanguage](#AppTranslatorgetBrowserLanguage)
-[AppTranslator.addVocabulary](#AppTranslatoraddVocabulary)
-[AppTranslator.removeVocabulary](#AppTranslatorremoveVocabulary)
-[AppTranslator.setOption](#AppTranslatorsetOption)
-[AppTranslator.translate](#AppTranslatortranslate)
+[AppTranslator.initialize](#AppTranslatorinitialize)  
+[AppTranslator.setLanguage](#AppTranslatorsetLanguage)  
+[AppTranslator.getBrowserLanguage](#AppTranslatorgetBrowserLanguage)  
+[AppTranslator.addVocabulary](#AppTranslatoraddVocabulary)  
+[AppTranslator.removeVocabulary](#AppTranslatorremoveVocabulary)  
+[AppTranslator.setOption](#AppTranslatorsetOption)  
+[AppTranslator.translate](#AppTranslatortranslate)  
 
 ### Aliases
 
-t() - call [AppTranslator.translate](#AppTranslatortranslate)
+t() - call [AppTranslator.translate](#AppTranslatortranslate)  
 
 ## Reference
 
