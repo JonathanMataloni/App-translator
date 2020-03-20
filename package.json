@@ -1,5 +1,5 @@
 {
-  "name": "@jonathanmataloni/app-translator",
+  "name": "app-translator",
   "description": "Define translation resources for your app and translate strings instantly",
   "version": "1.0.0",
   "tag": "1.0.0",
