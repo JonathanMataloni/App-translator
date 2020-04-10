@@ -1,28 +1,59 @@
 {
-  "name": "app-translator",
-  "description": "Define translation resources for your app and translate strings instantly",
-  "version": "1.0.0",
-  "tag": "1.0.0",
-  "author": "Jonathan Mataloni",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "keywords": [
-    "translation",
-    "languages"
-  ],
-  "license": "MIT",
-  "scripts": {
-    "tsc": "tsc",
-    "tsc-watch": "tsc --watch"
-  },
-  "devDependencies": {
-    "typescript": "^3.8.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JonathanMataloni/app-translator"
-  },
-  "files": [
-    "lib/**/*"
-  ]
+    "name": "app-translator",
+    "description": "Define multiple dictionaries for your app and translate strings instantly",
+    "version": "2.0.0",
+    "keywords": [
+        "translation",
+        "languages",
+        "intl",
+        "internationalization",
+        "i18n",
+        "i18next",
+        "dictionary",
+        "dictionary"
+    ],
+    "author": {
+        "name": "Jonathan Mataloni",
+        "email": "jo.mataloni@gmail.com",
+        "url": "https://wedial.it/jonathan-mataloni"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jonamat/app-translator"
+    },
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "jsnext:main": "lib/esm/index.js",
+    "types": "lib/esm/index.d.ts",
+    "sideEffects": false,
+    "license": "MIT",
+    "scripts": {
+        "build": "rimraf ./lib/* && concurrently \"npm run build:cjs \" \"npm run build:esm \" ",
+        "build:cjs": "rimraf ./lib/cjs && tsc -p . --outDir ./lib/cjs --module commonjs --target es5",
+        "build:esm": "rimraf ./lib/esm && tsc -p . --outDir ./lib/esm --module esnext --target es2018",
+        "test": "jest ./src --coverage",
+        "test:watch": "jest ./src --watch",
+        "lint": "eslint --ext .ts,.tsx ./src",
+        "lint:fix": "eslint --fix --ext .ts,.tsx ./src",
+        "prepublish": "npm run lint:fix && npm run test && npm run build"
+    },
+    "devDependencies": {
+        "@types/jest": "26.0.5",
+        "@types/lodash.isequal": "^4.5.5",
+        "@typescript-eslint/eslint-plugin": "3.7.0",
+        "@typescript-eslint/parser": "3.7.0",
+        "concurrently": "^5.2.0",
+        "eslint": "7.5.0",
+        "eslint-config-prettier": "6.11.0",
+        "eslint-plugin-prettier": "3.1.4",
+        "jest": "26.1.0",
+        "lodash.isequal": "^4.5.0",
+        "prettier": "2.0.5",
+        "rimraf": "^3.0.2",
+        "ts-jest": "26.1.3",
+        "typescript": "^3.8.3"
+    },
+    "files": [
+        "lib/**/*"
+    ]
 }
