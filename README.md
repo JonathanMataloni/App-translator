@@ -1,21 +1,11 @@
 # App Translator
 
-Define translation resources for your app and manage translations at runtime
+![version](https://img.shields.io/npm/v/app-translator)
+![size](https://img.shields.io/bundlephobia/min/app-translator)
+![download](https://img.shields.io/npm/dm/app-translator)
 
-## Description
-
-This package provides a bunch of methods to manage the translations in your app or website.
-
-**Can app-translator translate automatically any string?**
-No, that's not the purpose of this package. You must provide a vocabulary of original and translated strings pairs to app-translator to replace the original strings in your code.
-
-**Will the strings be translated at build or runtime?**
-At runtime only, app-translator replaces your hard-coded strings with translated strings. You can use app-translator without a bundler.
-
-## Supported languages
-
-- Typescript
-- Javascript ES2017
+Define multiple dictionaries for your app and translate strings instantly at runtime.\
+This tool does not call external APIs to translate your strings, you must first define yours dictionaries.
 
 ## Installation
 
@@ -23,388 +13,208 @@ At runtime only, app-translator replaces your hard-coded strings with translated
 npm install app-translator
 ```
 
-## Reference index
+## Compatibility
 
-### Interfaces
+Compatible with Node >=8.0.0
 
-[Vocabulary](#Vocabulary)  
-[VocabulariesCollection](#VocabulariesCollection)  
-[AppTranslatorOptions](#AppTranslatorOptions-interface)  
+## Features
+- Easy to use
+- You can add languages with just putting the dictionary in your lang folder
+- Can infer the browser language and search if a related dictionary is defined
+- Do not need to reload the app to switch the language
+- Extremely small
 
-### Classes
+### Other features
+- Static type checking with typescript declaration files
+- Exhaustive doc comments
+- Tree shakable: exported with ESM modules
+- Tested with available coverage report
 
-[AppTranslator](#AppTranslator)  
+## API
 
-### Properties
+Index
 
-[AppTranslator.language](#AppTranslatorlanguage)  
-[AppTranslator.options](#AppTranslatoroptions)  
-[AppTranslator.collection](#AppTranslatorcollection)  
+[Dictionary](#Dictionary)\
+[Collection](#Collection)\
+[AppTranslatorOptions](#AppTranslatorOptions)\
+[initTranslator](#initTranslator)\
+[translate](#translate) (alias [t](#translate))\
+[tryUseBrowserLanguage](#tryUseBrowserLanguage)\
+[getAvailableLanguages](#getAvailableLanguages)\
+[setLanguage](#setLanguage)\
+[setOptions](#setOptions)
 
-### Methods
+---
 
-[AppTranslator.initialize](#AppTranslatorinitialize)  
-[AppTranslator.setLanguage](#AppTranslatorsetLanguage)  
-[AppTranslator.getBrowserLanguage](#AppTranslatorgetBrowserLanguage)  
-[AppTranslator.addVocabulary](#AppTranslatoraddVocabulary)  
-[AppTranslator.removeVocabulary](#AppTranslatorremoveVocabulary)  
-[AppTranslator.setOption](#AppTranslatorsetOption)  
-[AppTranslator.translate](#AppTranslatortranslate)  
-
-### Aliases
-
-t() - call [AppTranslator.translate](#AppTranslatortranslate)  
-
-## Reference
-
-### Vocabulary
+#### Dictionary
 
 - _Interface_
 
-Define a single vocabulary.
+Define a single dictionary.
 
 | Property | Type                               | Description                                                                           |
 | :------- | :--------------------------------- | :------------------------------------------------------------------------------------ |
-| name     | string                             | The name of the language                                                              |
-| BCP47    | string                             | A valid [BCP47](https://github.com/libyal/libfwnt/wiki/Language-Code-identifiers) tag |
-| pairs    | { [ *original*: string ]: string } | Mapped pairs of strings ex. { "original string": "translated string" }                |
+| name     | string                             | The language name                                                                     |
+| bcp47    | string                             | A valid [BCP47](https://github.com/libyal/libfwnt/wiki/Language-Code-identifiers) tag |
+| pairs    | { [ *original*: string ]: string } | Pairs of original-translated strings                                                  |
 
 ---
 
-### VocabulariesCollection
+#### Collection
 
-- _Interface_
+- _interface_
 
-Define the vocabularies collection.
+Define the dictionaries collection in an array of dictionaries.
 
-| Property    | Type                             | Description         |
-| :---------- | :------------------------------- | :------------------ |
-| [ *bcp47* ] | [ *bcp47*: string ] : Vocabulary | A single vocabulary |
+_Array \<[Dictionary](#Dictionary)>_
 
 ---
 
-### AppTranslatorOptions (interface)
+#### AppTranslatorOptions
 
 - _Interface_
 
 Define options for AppTranslator.
 
-| Property          | Type    | Description                                                                                                                                                      |
-| :---------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| fallbackLanguage? | string  | A language to use if AppTranslator doesn't find a translated string in the main language. If you want use the original string from source, use "bypass" as value |
-| caseSensitive?    | boolean | Find the original string in vocabulary without consider the case                                                                                                 |
-| autoCapitalize?   | boolean | Capitalize automatically the first letter of each translated output, even if return the original string                                                          |
-| logs?             | boolean | Emit warns to the console                                                                                                                                        |
+| Property        | Type    | Description                                                         |
+| :-------------- | :------ | :------------------------------------------------------------------ |
+| caseSensitive?  | boolean | Look for the string in dictionary without consider the letters case |
+| autoCapitalize? | boolean | Capitalize automatically the first letter                           |
+| logs?           | boolean | Emit warns and non-blocking errors to the console                   |
 
 ---
 
-### AppTranslator
+#### initTranslator
 
-- _Class_
+- _Function ( language: string, collection?: [Collection](#Collection), options?: [AppTranslatorOptions](#AppTranslatorOptions) ): void_
 
-To initializate AppTranslator use [AppTranslator.initializate](#AppTranslatorinitializate)
-It's useless create AppTranslator instances. AppTranslator uses a bunch of static methods and propery to work.
+Initialize App Translator with a target language, a collection and custom options. If a collection is not provided, translate() method will bypass your strings.\
+⚠ It throws an error if you try to initialize App Translator multiple times.
 
----
-
-### AppTranslator.language
-
-- _string_
-
-The main vocabulary used by [AppTranslator.translate](#apptranslatortranslate). Change it with [AppTranslator.setLanguage](#apptranslatorsetlanguage)
+| Parameter   | Type                                          | Description                                    |
+| :---------- | :-------------------------------------------- | :--------------------------------------------- |
+| language    | string                                        | The primary dictionary to use for translations |
+| collection? | [Collection](#Collection)                     | The collection of dictionaries                 |
+| options?    | [AppTranslatorOptions](#AppTranslatorOptions) | Define the behavior of AppTranslator           |
 
 ---
 
-### AppTranslator.options
-
-- _Required<[AppTranslatorOptions](#AppTranslatorOptions-interface)>_
-
-Define the behavior of AppTranslator.
-
-| Property         | Type    | Default  | Description                                                                                                                                                                                                                                                |
-| :--------------- | :------ | :------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| fallbackLanguage | string  | "bypass" | A language to use if AppTranslator doesn't find a translated string in the main language. If you want use the original string from your source code, use "bypass" as value. ⚠ Can generate an error if original string doesn't match a related translation |
-| caseSensitive    | boolean | false    | Find the original string in vocabulary without consider the case                                                                                                                                                                                           |
-| autoCapitalize   | boolean | true     | Automatically capitalize the first letter of each translated output, even if it returns the original string                                                                                                                                                |
-| logs             | boolean | true     | Emit warns to the console                                                                                                                                                                                                                                  |
-
----
-
-### AppTranslator.collection
-
-- _[VocabularyCollection](#VocabularyCollection)_
-
-The provided collection of vocabularies.
-
----
-
-### AppTranslator.initialize
-
-- _Function ( language: string, collection?: [VocabulariesCollection](#VocabulariesCollection), options?: [AppTranslatorOptions](#AppTranslatorOptions-interface) ): void_
-
-Initialize AppTranslator. It's required to use AppTranslator, otherwise it will generate an error. It cannot be initialized multiple times. To modify its properties, use the related methods.
-
-| Parameter   | Type                                         | Description                                           |
-| :---------- | :------------------------------------------- | :---------------------------------------------------- |
-| language    | string                                       | The main vocabulary used by AppTranslator.translate |
-| collection? | [VocabularyCollection](#VocabularyCollection) | The collection of vocabularies                        |
-| options?    | [AppTranslatorOptions](#AppTranslatorOptions-interface) | Define the behavior of AppTranslator                  |
-
----
-
-### AppTranslator.setLanguage
-
-- _Function ( language: string ): void_
-
-Set a new language as main vocabulary used by AppTranslator.translate
-
-| Parameter | Type   | Description                                           |
-| :-------- | :----- | :---------------------------------------------------- |
-| language  | string | The main vocabulary used by AppTranslator.translate |
-
----
-
-### AppTranslator.getBrowserLanguage
-
-- _Function ( force?: boolean ): boolean_
-- _Return: True if a related vocabulary is available in current collection_
-
-Use the browser language as primary if provided by vocabularies collection, otherwise use the main language. You can force this behavior ([AppTranslator.translate](#AppTranslator.translate) will use the fallback language or the original provided strings).
-
-| Parameter | Type   | Description                                                                          |
-| :-------- | :----- | :----------------------------------------------------------------------------------- |
-| language  | string | The main vocabulary used by [AppTranslator.translate](#AppTranslator.translate) |
-
----
-
-### AppTranslator.addVocabulary
-
-- _Function ( tag: string, vocabulary: Vocabulary ): void_
-
-Add a vocabulary to the current vocabulary collection
-
-| Parameter  | Type                     | Description                                                                           |
-| :--------- | :----------------------- | :------------------------------------------------------------------------------------ |
-| tag        | string                   | A valid [BCP47](https://github.com/libyal/libfwnt/wiki/Language-Code-identifiers) tag |
-| vocabulary | [Vocabulary](#Vocabulary) | The related [Vocabulary](#Vocabulary)                                            |
-
----
-
-### AppTranslator.removeVocabulary
-
-- _Function ( tag: string ): void_
-
-Remove a vocabulary to the current vocabulary collection
-
-| Parameter | Type   | Description                                                                                                                           |
-| :-------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------ |
-| tag       | string | A valid [BCP47](https://github.com/libyal/libfwnt/wiki/Language-Code-identifiers) tag, currently present in the vocabulary collection |
-
----
-
-### AppTranslator.setOption
-
-- _Function ( key: keyof [AppTranslatorOptions](#AppTranslatorOptions-interface), value: string | boolean ): void_
-
-Override a single option in AppTranslator.options
-
-| Parameter | Type                     | Description                            |
-| :-------- | :----------------------- | :------------------------------------- |
-| key       | string                   | The key name of the option to override |
-| value     | [Vocabulary](#Vocabulary) | The new value of the option            |
-
----
-
-### AppTranslator.translate()
+#### translate (alias t)
 
 - _Function ( originalStr: string | number, capitalize?: boolean ): string_
-- _Return: The translated string in the chosen main language, the fallback language or the original code, in upper case if required_
 
-Translate a string
+Return the translated string in the chosen language or the original string if no translation was found
 
-| Parameter   | Type             | Description                                                                        |
-| :---------- | :--------------- | :--------------------------------------------------------------------------------- |
-| originalStr | string \| number | The original string in the source code                                             |
-| capitalize  | boolean          | Capitalize the first letter of the output (even if it returns the original string) |
+| Parameter   | Type             | Description                               |
+| :---------- | :--------------- | :---------------------------------------- |
+| originalStr | string or number | The original string in the code           |
+| capitalize  | boolean          | Capitalize the first letter of the output |
 
-> You can also invoke AppTranslator.translate() importing "t" from "app-translator"
->
-> ```ts
-> import { t } from "app-translator"
-> t("original string", true);
-> // Expected output: "Translated capitalized string"
-> ```
+
+---
+
+#### tryUseBrowserLanguage
+
+- _Function(): string | null_
+
+Try to infer the dictionary from the browser. It compares the bcp47 tag in the dictionaries with navigator.language. If a dictionary was found, it returns the found language name and sets it as primary language. Otherwise returns null and does not change the language.
+
+---
+
+#### getAvailableLanguages
+
+- _Function(): Array\<string>_
+
+Return an array of the names of the currently loaded dictionaries.
+
+---
+
+#### setLanguage
+
+- _Function(language: string): void_
+
+Set a new primary language. If not present in the collection will generate a console error but will not change the language.
+
+---
+
+#### setOptions
+
+- _Function(options: [AppTranslatorOptions](#AppTranslatorOptions)): void_
+
+Override the provided new options with the old one.\
+⚠ It throws an error if you pass invalid options
 
 ---
 
 ## Examples
 
-- Basic usage
+You can import dictionaries as json or js modules. In this example I'll use the ES js modules.
 
-```ts
-import { AppTranslator, Vocabulary, VocabulariesCollection, t } from "app-translator";
-
-// Define some vocabularies
-const italian: Vocabulary = {
-  BCP47: "it",
-  name: "Italiano",
-  pairs: {
-    "original text in the code": "testo originale nel codice",
-    "First capital letter": "Prima lettera maiuscola"
-  }
-};
-
-const polish: Vocabulary = {
-  BCP47: "pl",
-  name: "Polskie",
-  pairs: {
-    "original text in the code": "oryginalny tekst w kodzie",
-    "First capital letter": "Pierwsza wielka litera"
-  }
-};
-
-// Combine them in a collection
-const collection: VocabulariesCollection = {
-  it: italian,
-  pl: polish
-};
-
-// Inizialize AppTransaltor with your default language
-AppTranslator.initialize("it", collection);
-
-// Translate your strings!
-// You can use AppTranslator.translate("string") or import "t" and use it as that
-
-console.log(t("original text in the code"));
-// Expected output: "testo originale nel codice"
-```
-
-- Import automatically vocabularies from a path
-
-```ts
-import { AppTranslator, VocabulariesCollection } from "app-translator";
-import * as importedVocabularies from "/vocabularies";
-
-// Type checking
-const vocabularies: VocabulariesCollection = importedVocabularies;
-
-// Initialize AppTranslator
-AppTranslator.initialize("it", collection);
-```
-
-- Create a collection from a vocabulary array
-
-```ts
-import { AppTranslator, VocabulariesCollection } from "app-translator";
-
-// Define vocabularies in an array
-const collection: VocabulariesCollection = [
-  {
-    BCP47: "it",
-    name: "Italiano",
+1. Put your dictionaries in `src/languages/`
+```js
+export const italian = {
+    name: 'italian',
+    bcp47: 'it-IT',
     pairs: {
-      "original text in the code": "testo originale nel codice",
-      "First capital letter": "Prima lettera maiuscola"
-    }
-  },
-  {
-    BCP47: "pl",
-    name: "Polskie",
-    pairs: {
-      "original text in the code": "oryginalny tekst w kodzie",
-      "First capital letter": "Pierwsza wielka litera"
-    }
-  }
-];
-
-// Combine them in a collection
-let collection: VocabulariesCollection = Object.fromEntries(vocabularies.map(vocabulary => [vocabulary.BCP47, vocabulary]));
-
-// Initialize AppTranslator
-AppTranslator.initialize("it", collection);
-```
-
-- Initialize AppTranslator with custom options
-
-```ts
-import { AppTranslator, VocabulariesCollection, AppTranslatorOptions } from "app-translator";
-import * as importedVocabularies from "/vocabularies";
-
-// Type checking
-const vocabularies: VocabulariesCollection = importedVocabularies;
-
-// Define custom options for AppTranslator
-const options: AppTranslatorOptions = {
-    fallbackLanguage: "en"
-    autoCapitalize: false,
-    caseSensitive: true
-    log: false
+        'leave a comment': 'lascia un commento',
+    },
 }
-
-// Initialize AppTranslator
-AppTranslator.initialize("it", collection, options);
 ```
 
-- Add vocabularies at runtime
+2. Define an index in `src/languages/` with all your exported languages (you can skip this step and import directly in your entry point, but this is more pratical for many dictionaries)
+```js
+export * from './russian'
+export * from './german'
+export * from './italian'
+export * from './spanish'
+```
 
-```ts
-// Define or import the vocabulary
-const franch: Vocabulary = {
-  BCP47: "fr",
-  name: "Française",
-  pairs: {
-    Import: "Importer",
-    Deleted: "Supprimé"
-  }
+3. Import them grupped and create your collection
+```js
+import * as languages from './languages'
+const collection = Object.values(languages)
+```
+
+4. Initialize App Translator
+```js
+import { initTranslator } from "app-translator";
+initTranslator("italian", collection, { caseSensitive: false, autoCapitalize: true });
+```
+Now the dictionaries and options are available in window.appTranslator.
+
+5. Translate everywhere! (Example in React)
+```js
+import { t } from "app-translator";
+
+const App = () => {
+  return <h1>{ t("leave a Comment") }</h1>;
 };
-
-// Add the vocabulary to the current collection
-AppTranslator.addVocabulary("fr", franch);
-
-// Set the new language as default
-AppTranslator.setLanguage("fr");
-
-console.log(t("Deleted"));
-// Expected output: "Supprimé"
 ```
 
-- Change options after initialization
+Folder structure:
+src/\
+--main.js\
+--languages/\
+----russian.js\
+----german.js\
+----italian.js\
+----spanish.js\
+----index.js
 
-```ts
-console.log(AppTranslator.options);
-// Expected output:
-// { fallbackLanguage: "bypass", autoCapitalize: false, caseSensitive: true, logs: true }
-
-AppTranslator.setOption("fallbackLanguage", "it");
-AppTranslator.setOption("autoCapitalize", true);
-AppTranslator.setOption("logs", false);
-
-console.log(AppTranslator.options);
-// Expected output:
-// { fallbackLanguage: "it", autoCapitalize: true, caseSensitive: true, logs: false }
-```
-
-- Translate!
-
-```ts
-// Long boring method
-console.log(AppTranslator.translate("original string"));
-// Expected output: "stringa originale"
-
-// Faster way (you need to import "t" from app-translator)
-console.log(t("original string"));
-// Expected output: "stringa originale"
-
-// Force upper case
-console.log(t("original string", true));
-// Expected output: "Stringa originale"
-```
+You can use App Translator even without a module system or organize your exports as you think is best, there are no specific rules about it.
 
 ### Links
 
 - [BCP 47 Language Tags](https://github.com/libyal/libfwnt/wiki/Language-Code-identifiers)
 - [BCP 47 Specifications](https://tools.ietf.org/html/bcp47)
 
-### License
+## Dependencies
 
-app-translator package released under MIT License. See LICENSE for details.
+No dependencies
+
+### Peer dependencies
+
+No peer dependencies
+
+## License
+MIT
