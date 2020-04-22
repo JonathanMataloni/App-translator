@@ -18,8 +18,5 @@ declare global {
         };
     }
 }
-export * from './initTranslator';
-export * from './translate';
-export * from './tryUseBrowserLanguage';
-export * from './types';
-export * from './utils';
+
+export {};
