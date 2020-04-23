@@ -191,7 +191,7 @@ const App = () => {
 };
 ```
 
-Folder structure:
+Folder structure:\
 src/\
 --main.js\
 --languages/\
@@ -211,10 +211,6 @@ You can use App Translator even without a module system or organize your exports
 ## Dependencies
 
 No dependencies
-
-### Peer dependencies
-
-No peer dependencies
 
 ## License
 MIT
