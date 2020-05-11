@@ -19,7 +19,6 @@ export const translate = (originalString: string | number, capitalize?: boolean)
     if (typeof originalString == 'number') return originalString.toString();
 
     if (!dictionary) {
-        if (logs) console.warn(`Cannot find a dictionary for "${language}" in the provided collection`);
         return capitalize || autoCapitalize
             ? originalString[0].toUpperCase() + originalString.slice(1)
             : originalString;

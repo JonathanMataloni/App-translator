@@ -11,7 +11,10 @@ export const _checkInit = (): void => {
  */
 export const getDictionary = (language: string): Dictionary | undefined => {
     _checkInit();
-    return window.appTranslator.collection?.find((dictionary) => dictionary.name === language);
+    return (
+        window.appTranslator &&
+        window.appTranslator.collection?.find((dictionary) => dictionary.name.toLowerCase() === language.toLowerCase())
+    );
 };
 
 /**
@@ -31,7 +34,7 @@ export const setLanguage = (language: string): void => {
     _checkInit();
 
     if (getDictionary(language)) {
-        window.appTranslator.language = language;
+        window.appTranslator.language = language.toLowerCase();
     } else console.error(`Language "${language}" not exists in the provided collection`);
 };
 

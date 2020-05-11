@@ -21,7 +21,7 @@ export const initTranslator = (language: string, collection?: Collection, option
     Object.defineProperty(window, 'appTranslator', {
         value: {
             options: { ...defaultOptions },
-            language,
+            language: language.toLowerCase(),
             collection,
         },
     });

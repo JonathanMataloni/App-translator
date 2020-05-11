@@ -17,15 +17,19 @@ export const tryUseBrowserLanguage = (): string | null => {
         return null;
     }
 
-    const bcp47tag = navigator.language.split('-');
+    const bcp47tag = navigator.language.toLowerCase().split('-');
 
     const foundDictionary = collection.find(
-        (dictionary) => dictionary.bcp47 === bcp47tag[0] || dictionary.bcp47 === `${bcp47tag[0]}-${bcp47tag[1]}`,
+        (dictionary) =>
+            dictionary.bcp47.toLowerCase() === bcp47tag[0] ||
+            dictionary.bcp47.toLowerCase() === `${bcp47tag[0]}-${bcp47tag[1]}`,
     );
 
     if (!foundDictionary) {
         if (logs)
-            console.warn(`Browser language "${bcp47tag}" is not available in the provided dictionaries collection.`);
+            console.warn(
+                `Browser language "${bcp47tag[0]}-${bcp47tag[1]}" is not available in the provided dictionaries collection.`,
+            );
         return null;
     }
 
