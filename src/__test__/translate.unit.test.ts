@@ -72,13 +72,6 @@ describe('Translation function', () => {
         expect(translate('spaghetti meatball', true)).toBe('Spaghetti meatball');
     });
 
-    it('emits a warn if no dictionaries were found', () => {
-        initTranslator('french');
-        warn.mockClear();
-        translate('something');
-        expect(warn).toBeCalledTimes(1);
-    });
-
     it('emits a warn if no translation were found', () => {
         initTranslator('italian', collection);
         warn.mockClear();
